@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sąd Okręgowy | Warmia RP</title>
+    <!-- Nowa linijka z logo na karcie strony -->
+    <link rel="icon" href="https://i.imgur.com/your_logo_url.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: #161b22;
+            padding: 35px 45px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid #30363d;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #58a6ff;
+            font-size: 2.2em;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+            border-bottom: 2px solid #58a6ff;
+            padding-bottom: 10px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        button.tab-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            background: #21262d;
+            color: #8b949e;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button.tab-btn:hover {
+            background: #30363d;
+            color: #c9d1d9;
+        }
+        
+        button.tab-btn.active {
+            background: #58a6ff;
+            color: #0d1117;
+            box-shadow: 0 4px 20px rgba(88, 166, 255, 0.4);
+        }
+
+        .tab {
+            display: none;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .tab.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        form label {
+            font-weight: 600;
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            color: #c9d1d9;
+        }
+
+        input[type=text], input[type=number], input[type=datetime-local], input[type=date], select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1em;
+            border: 1px solid #30363d;
+            background-color: #21262d;
+            color: #c9d1d9;
+            border-radius: 10px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input[type=text]:focus, input[type=number]:focus, input[type=datetime-local]:focus, input[type=date]:focus, select:focus, textarea:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            outline: none;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #6e7681;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        button[type=submit] {
+            margin-top: 30px;
+            background: linear-gradient(90deg, #38a169, #2f855a);
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(56, 161, 105, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        button[type=submit]:hover {
+            background: linear-gradient(90deg, #2f855a, #276749);
+            box-shadow: 0 6px 20px rgba(56, 161, 105, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .status {
+            margin-top: 20px;
+            font-weight: 600;
+            text-align: center;
+            min-height: 1.5em;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .status-success {
+            background-color: #28a74533;
+            color: #28a745;
+        }
+        
+        .status-error {
+            background-color: #dc354533;
+            color: #dc3545;
+        }
+        
+        select option {
+            background-color: #21262d;
+            color: #c9d1d9;
+        }
+
+        #rejestr-spraw-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .case-item {
+            background: #21262d;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #30363d;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .case-item strong {
+            color: #58a6ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sąd Okręgowy | Warmia RP</h1>
+        
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('wniosek')"><i class="fas fa-file-signature"></i> Wniosek</button>
+            <button class="tab-btn" onclick="showTab('wyrok')"><i class="fas fa-gavel"></i> Wyrok</button>
+            <button class="tab-btn" onclick="showTab('ulaskawienie')"><i class="fas fa-hand-holding-heart"></i> Ułaskawienie</button>
+            <button class="tab-btn" onclick="showTab('raport')"><i class="fas fa-clipboard"></i> Raport</button>
+            <button class="tab-btn" onclick="showTab('dowody')"><i class="fas fa-folder-open"></i> Dowody</button>
+            <button class="tab-btn" onclick="showTab('kalendarz')"><i class="fas fa-calendar-alt"></i> Kalendarz</button>
+            <button class="tab-btn" onclick="showTab('rejestr')"><i class="fas fa-list-alt"></i> Rejestr</button>
+        </div>
+
+        <!-- 1. Wniosek o wszczęcie postępowania -->
+        <div id="wniosek" class="tab active">
+            <form id="wniosekForm">
+                <label>Numer sprawy (automatycznie):</label>
+                <input type="text" id="caseNumberWniosek" placeholder="Zostanie nadany automatycznie" disabled />
+
+                <label>Imię i nazwisko osoby oskarżonej:</label>
+                <input type="text" id="ukaranyWniosek" required placeholder="np. Jan Kowalski" />
+
+                <label>Zgłaszający (prokuratura, policja):</label>
+                <input type="text" id="zglaszajacyWniosek" required placeholder="np. prokurator Karol Wójcik" />
+
+                <label>Data i godzina zdarzenia:</label>
+                <input type="datetime-local" id="dataZdarzeniaWniosek" required />
+
+                <label>Miejsce zdarzenia:</label>
+                <input type="text" id="miejsceZdarzeniaWniosek" required placeholder="np. Olsztyn, ul. Warszawska 10" />
+                
+                <label>Opis sprawy i zarzuty:</label>
+                <textarea id="opisSprawyWniosek" required placeholder="Szczegółowy opis zdarzenia, zarzuty, posiadane dowody..."></textarea>
+                
+                <label>Wnioski i żądania prokuratury:</label>
+                <textarea id="wnioskiWniosek" required placeholder="np. Wnioskuję o nałożenie kary grzywny w wysokości..."></textarea>
+
+                <button type="submit">Wyślij wniosek do sądu</button>
+            </form>
+            <div id="statusWniosek" class="status"></div>
+        </div>
+
+        <!-- 2. Wydawanie wyroków -->
+        <div id="wyrok" class="tab">
+            <form id="wyrokForm">
+                <label>Numer sprawy:</label>
+                <input type="text" id="caseNumberWyrok" required placeholder="np. WO/S/2025/123" />
+
+                <label>Imię i nazwisko osoby oskarżonej:</label>
+                <input type="text" id="ukaranyWyrok" required placeholder="np. Jan Kowalski" />
+
+                <label>Sędzia wydający wyrok:</label>
+                <input type="text" id="sedziaWyrok" required placeholder="np. Sędzia Mateusz Królikowski" />
+
+                <label>Data wydania wyroku:</label>
+                <input type="date" id="dataWyroku" required />
+                
+                <label>Treść wyroku (werdykt):</label>
+                <textarea id="trescWyroku" required placeholder="Sąd uznaje oskarżonego Jana Kowalskiego winnym/niewinnym zarzucanych mu czynów..."></textarea>
+                
+                <label>Wymiar kary (jeśli dotyczy):</label>
+                <textarea id="wymiarKary" placeholder="np. Kara pozbawienia wolności na okres 5 lat, grzywna w wysokości 20 000 PLN. (Zostaw puste, jeśli uniewinniony)"></textarea>
+                
+                <label>Uzasadnienie:</label>
+                <textarea id="uzasadnienieWyrok" required placeholder="Na podstawie zebranych dowodów, zeznań świadków, analizy materiału dowodowego i przepisów prawa..."></textarea>
+
+                <button type="submit">Wydaj i wyślij wyrok</button>
+            </form>
+            <div id="statusWyrok" class="status"></div>
+        </div>
+        
+        <!-- 3. Wniosek o ułaskawienie -->
+        <div id="ulaskawienie" class="tab">
+            <form id="ulaskawienieForm">
+                <label>Imię i nazwisko skazanego:</label>
+                <input type="text" id="skazanyUlaskawienie" required placeholder="np. Jan Kowalski" />
+                
+                <label>Numer sprawy (dotyczącej wyroku):</label>
+                <input type="text" id="caseNumberUlaskawienie" required placeholder="np. WO/S/2025/123" />
+                
+                <label>Uzasadnienie wniosku o ułaskawienie:</label>
+                <textarea id="uzasadnienieUlaskawienie" required placeholder="Opisz powody, dla których ułaskawienie jest uzasadnione (np. wzorowe zachowanie, nowe okoliczności sprawy)."></textarea>
+
+                <button type="submit">Wyślij wniosek o ułaskawienie</button>
+            </form>
+            <div id="statusUlaskawienie" class="status"></div>
+        </div>
+
+        <!-- 4. Raport z rozprawy -->
+        <div id="raport" class="tab">
+            <form id="raportForm">
+                <label>Numer sprawy:</label>
+                <input type="text" id="caseNumberRaport" required placeholder="np. WO/S/2025/123" />
+                
+                <label>Sędzia prowadzący rozprawę:</label>
+                <input type="text" id="sedziaRaport" required placeholder="np. Sędzia Mateusz Królikowski" />
+                
+                <label>Uczestnicy rozprawy:</label>
+                <textarea id="uczestnicyRaport" required placeholder="np. Oskarżony: Jan Kowalski, Obrońca: adw. Adam Nowak, Prokurator: prok. Anna Wiśniewska"></textarea>
+                
+                <label>Przebieg rozprawy (Notatki):</label>
+                <textarea id="przebiegRaport" required placeholder="np. 14:00 - Rozpoczęcie rozprawy. 14:15 - Zeznania świadka Marka Dąbrowskiego..."></textarea>
+                
+                <button type="submit">Wyślij raport z rozprawy</button>
+            </form>
+            <div id="statusRaport" class="status"></div>
+        </div>
+
+        <!-- 5. Złożenie dowodów -->
+        <div id="dowody" class="tab">
+            <form id="dowodyForm">
+                <label>Numer sprawy:</label>
+                <input type="text" id="caseNumberDowody" required placeholder="np. WO/S/2025/123" />
+                
+                <label>Imię i nazwisko osoby składającej dowód:</label>
+                <input type="text" id="zglaszajacyDowody" required placeholder="np. sierż. sztab. Marek Nowak" />
+                
+                <label>Opis dowodu:</label>
+                <textarea id="opisDowodu" required placeholder="np. Zapis z kamery nasobnej funkcjonariusza, zdjęcia z miejsca zdarzenia, zeznania świadka w formie pisemnej."></textarea>
+                
+                <label>Link do dowodu (np. imgur, YouTube, Google Drive):</label>
+                <input type="text" id="linkDowodu" placeholder="Wklej tutaj link" />
+                <p style="font-size: 0.9em; color: #6e7681; margin-top: -8px;">Możesz wkleić jeden lub więcej linków oddzielonych przecinkami.</p>
+
+                <button type="submit">Złóż dowód</button>
+            </form>
+            <div id="statusDowody" class="status"></div>
+        </div>
+
+        <!-- 6. Kalendarz Sądowy -->
+        <div id="kalendarz" class="tab">
+            <form id="kalendarzForm">
+                <label>Numer sprawy:</label>
+                <input type="text" id="caseNumberKalendarz" required placeholder="np. WO/S/2025/123" />
+                
+                <label>Sędzia:</label>
+                <input type="text" id="sedziaKalendarz" required placeholder="np. Sędzia Mateusz Królikowski" />
+                
+                <label>Termin rozprawy:</label>
+                <input type="datetime-local" id="terminRozprawy" required />
+                
+                <label>Uczestnicy rozprawy:</label>
+                <textarea id="uczestnicyKalendarz" required placeholder="np. Oskarżony: Jan Kowalski, Obrońca: adw. Adam Nowak"></textarea>
+                
+                <button type="submit">Dodaj rozprawę do kalendarza</button>
+            </form>
+            <div id="statusKalendarz" class="status"></div>
+        </div>
+
+        <!-- 7. Rejestr Spraw -->
+        <div id="rejestr" class="tab">
+            <h2>Rejestr Otwartych Spraw</h2>
+            <p>Poniżej znajduje się lista wszystkich złożonych wniosków o wszczęcie postępowania. Dane są tymczasowo zapisane w Twojej przeglądarce, co pozwala na ich szybkie podglądanie.</p>
+            <ul id="rejestr-spraw-list"></ul>
+            <p id="brakSprawInfo" style="text-align: center; color: #6e7681;">Brak spraw w rejestrze.</p>
+        </div>
+
+    </div>
+    <script>
+        // UWAGA: Poniżej musisz podmienić adresy URL na swoje własne webhooki!
+        // Stwórz siedem osobnych kanałów na Discordzie i siedem webhooków dla każdego z nich.
+        const webhookWnioski = 'https://discord.com/api/webhooks/1405287907685568662/8trKJ1xJ5Sd4zjGILiJnO1PDKSg66XCdUNsopcsA-lWSaBRUpDFY4nhSV7D-cM3c-0gB'; 
+        const webhookWyroki = 'https://discord.com/api/webhooks/1403681144029057074/qWog2W1UxsgQp1P_IzmI0sqjmXtC7ZD4Fw3XsGhLX39AFaW31cyTC1Y0bNh6AfeqXy8c';
+        const webhookUlaskawienia = 'https://discord.com/api/webhooks/1405288093019537428/mllgPqj20BBj7LOkSjDVNCQzbaaY8lxVWVWUpihXVMESUawCOKqXVbf10JOT9ZZ3uBR9';
+        const webhookRaporty = 'https://discord.com/api/webhooks/1405288179946225786/lHbPOsqW_TqXoK8Xg8mm-tzDqcQz7OENFmJZzMwKOgbW-PEqgePP0oDOfLsWLIxPNGX4';
+        const webhookDowody = 'https://discord.com/api/webhooks/1405288262343458926/c3YCwA0d4fiRsxWlS6zmkbJyyrU8wgymuBcPubd7ooXe5UL5iGH1sLL986KLMxW-fI9E';
+        const webhookKalendarz = 'https://discord.com/api/webhooks/1405288349954215968/6W3wQmLlzHFWL2L31NIAojbPVx4hIv1HeaWS4vldrDak7VKKk0gDCeg_gqhu_np0NztH';
+
+        let lastCaseNumber = localStorage.getItem('lastCaseNumber') ? parseInt(localStorage.getItem('lastCaseNumber')) : 123;
+        
+        // Funkcja do przełączania zakładek
+        function showTab(id) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (id === 'rejestr') {
+                renderCaseRegister();
+            }
+        }
+
+        // Funkcja do wyświetlania statusu operacji
+        function setStatus(elementId, message, isSuccess) {
+            const statusElement = document.getElementById(elementId);
+            statusElement.textContent = message;
+            statusElement.classList.remove('status-success', 'status-error');
+            if (isSuccess !== null) {
+                statusElement.classList.add(isSuccess ? 'status-success' : 'status-error');
+            }
+        }
+
+        // Funkcja do wysyłania embeda na Discorda
+        async function wyslijWebhook(url, embed) {
+            const body = JSON.stringify({ embeds: [embed] });
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: body
+            });
+            if(!response.ok) {
+                throw new Error(`Błąd sieci: ${response.status} ${response.statusText}`);
+            }
+        }
+        
+        // Rejestr Spraw - funkcje
+        function saveCaseToRegister(caseData) {
+            let cases = JSON.parse(localStorage.getItem('caseRegister')) || [];
+            cases.push(caseData);
+            localStorage.setItem('caseRegister', JSON.stringify(cases));
+            renderCaseRegister();
+        }
+
+        function renderCaseRegister() {
+            const list = document.getElementById('rejestr-spraw-list');
+            const noCasesInfo = document.getElementById('brakSprawInfo');
+            const cases = JSON.parse(localStorage.getItem('caseRegister')) || [];
+            list.innerHTML = '';
+            
+            if (cases.length === 0) {
+                noCasesInfo.style.display = 'block';
+            } else {
+                noCasesInfo.style.display = 'none';
+                cases.forEach(c => {
+                    const li = document.createElement('li');
+                    li.classList.add('case-item');
+                    li.innerHTML = `
+                        <strong>Numer sprawy:</strong> ${c.caseNumber}<br>
+                        <strong>Oskarżony:</strong> ${c.ukarany}<br>
+                        <strong>Zgłaszający:</strong> ${c.zglaszajacy}<br>
+                        <strong>Opis:</strong> ${c.opisSprawy}
+                    `;
+                    list.appendChild(li);
+                });
+            }
+        }
+
+        // Uruchomienie rejestru po załadowaniu strony
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCaseRegister();
+        });
+
+
+        // Formularz Wniosku
+        document.getElementById('wniosekForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            setStatus('statusWniosek', 'Wysyłam wniosek...', null);
+
+            try {
+                lastCaseNumber++;
+                let rok = new Date().getFullYear().toString().substr(-2);
+                const caseNumber = `WO/S/${rok}/${lastCaseNumber}`;
+                document.getElementById('caseNumberWniosek').value = caseNumber;
+
+                const ukarany = document.getElementById('ukaranyWniosek').value.trim();
+                const zglaszajacy = document.getElementById('zglaszajacyWniosek').value.trim();
+                const dataZdarzenia = document.getElementById('dataZdarzeniaWniosek').value;
+                const miejsceZdarzenia = document.getElementById('miejsceZdarzeniaWniosek').value.trim();
+                const opisSprawy = document.getElementById('opisSprawyWniosek').value.trim();
+                const wnioski = document.getElementById('wnioskiWniosek').value.trim();
+
+                const embed = {
+                    title: ":scroll: WNIOSEK O WSZCZĘCIE POSTĘPOWANIA",
+                    description: `**Numer sprawy:** ${caseNumber}\n> Złożono do **Sądu Okręgowego w Olsztynie – Warmia RP**`,
+                    color: 0x58a6ff,
+                    fields: [
+                        { name: 'Oskarżony:', value: ukarany, inline: false },
+                        { name: 'Zgłaszający:', value: zglaszajacy, inline: false },
+                        { name: 'Data zdarzenia:', value: dataZdarzenia, inline: true },
+                        { name: 'Miejsce zdarzenia:', value: miejsceZdarzenia, inline: true },
+                        { name: 'Opis sprawy i zarzuty', value: opisSprawy, inline: false },
+                        { name: 'Wnioski i żądania', value: wnioski, inline: false },
+                    ],
+                    footer: { text: "Sąd Okręgowy w Olsztynie – Warmia RP" },
+                    timestamp: new Date().toISOString(),
+                };
+
+                await wyslijWebhook(webhookWnioski, embed);
+
+                // Zapisz sprawę w lokalnym rejestrze
+                saveCaseToRegister({
+                    caseNumber: caseNumber,
+                    ukarany: ukarany,
+                    zglaszajacy: zglaszajacy,
+                    opisSprawy: opisSprawy
+                });
+                localStorage.setItem('lastCaseNumber', lastCaseNumber);
+
+
+                setStatus('statusWniosek', 'Wniosek został pomyślnie wysłany! Numer sprawy: ' + caseNumber, true);
+                e.target.reset();
+                rok = new Date().getFullYear().toString().substr(-2);
+                document.getElementById('caseNumberWniosek').value = `WO/S/${rok}/${lastCaseNumber+1}`;
+
+
+            } catch(err) {
+                setStatus('statusWniosek', 'Błąd podczas wysyłania wniosku: ' + err.message, false);
+            }
+        });
+
+        // Formularz Wyroku
+        document.getElementById('wyrokForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            setStatus('statusWyrok', 'Wysyłam wyrok...', null);
+
+            try {
+                const caseNumber = document.getElementById('caseNumberWyrok').value.trim();
+                const ukarany = document.getElementById('ukaranyWyrok').value.trim();
+                const sedzia = document.getElementById('sedziaWyrok').value.trim();
+                const dataWyroku = document.getElementById('dataWyroku').value;
+                const trescWyroku = document.getElementById('trescWyroku').value.trim();
+                const wymiarKary = document.getElementById('wymiarKary').value.trim() || 'Uniewinniono';
+                const uzasadnienie = document.getElementById('uzasadnienieWyrok').value.trim();
+
+                const embed = {
+                    title: ":hammer: WYROK SĄDOWY",
+                    description: `**Numer sprawy:** ${caseNumber}\n> Wydano w **Sądzie Okręgowym w Olsztynie – Warmia RP**`,
+                    color: 0x38a169,
+                    fields: [
+                        { name: 'Oskarżony:', value: ukarany, inline: false },
+                        { name: 'Sędzia:', value: sedzia, inline: false },
+                        { name: 'Data wydania:', value: dataWyroku, inline: false },
+                        { name: 'Werdykt', value: trescWyroku, inline: false },
+                        { name: 'Wymiar kary', value: wymiarKary, inline: false },
+                        { name: 'Uzasadnienie', value: uzasadnienie, inline: false },
+                    ],
+                    footer: { text: "Sąd Okręgowy w Olsztynie – Warmia RP" },
+                    timestamp: new Date().toISOString(),
+                };
+
+                await wyslijWebhook(webhookWyroki, embed);
+                setStatus('statusWyrok', 'Wyrok został pomyślnie wysłany!', true);
+                e.target.reset();
+
+            } catch(err) {
+                setStatus('statusWyrok', 'Błąd podczas wysyłania wyroku: ' + err.message, false);
+            }
+        });
+
+        // Formularz Ułaskawienia
+        document.getElementById('ulaskawienieForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            setStatus('statusUlaskawienie', 'Wysyłam wniosek...', null);
+            
+            try {
+                const skazany = document.getElementById('skazanyUlaskawienie').value.trim();
+                const caseNumber = document.getElementById('caseNumberUlaskawienie').value.trim();
+                const uzasadnienie = document.getElementById('uzasadnienieUlaskawienie').value.trim();
+
+                const embed = {
+                    title: ":scroll: WNIOSEK O UŁASKAWIENIE",
+                    description: `> Złożono do **Sądu Okręgowego w Olsztynie – Warmia RP**`,
+                    color: 0xffa500,
+                    fields: [
+                        { name: 'Skazany:', value: skazany, inline: false },
+                        { name: 'Numer sprawy:', value: caseNumber, inline: false },
+                        { name: 'Uzasadnienie wniosku', value: uzasadnienie, inline: false },
+                    ],
+                    footer: { text: "Sąd Okręgowy w Olsztynie – Warmia RP" },
+                    timestamp: new Date().toISOString(),
+                };
+
+                await wyslijWebhook(webhookUlaskawienia, embed);
+                setStatus('statusUlaskawienie', 'Wniosek o ułaskawienie został pomyślnie wysłany.', true);
+                e.target.reset();
+
+            } catch(err) {
+                setStatus('statusUlaskawienie', 'Błąd podczas wysyłania wniosku: ' + err.message, false);
+            }
+        });
+
+        // Formularz Raportu
+        document.getElementById('raportForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            setStatus('statusRaport', 'Wysyłam raport...', null);
+
+            try {
+                const caseNumber = document.getElementById('caseNumberRaport').value.trim();
+                const sedzia = document.getElementById('sedziaRaport').value.trim();
+                const uczestnicy = document.getElementById('uczestnicyRaport').value.trim();
+                const przebieg = document.getElementById('przebiegRaport').value.trim();
+
+                const embed = {
+                    title: ":clipboard: RAPORT Z ROZPRAWY",
+                    description: `**Sąd Okręgowy w Olsztynie – Warmia RP**\n\n**Numer sprawy:** ${caseNumber}`,
+                    color: 0x8b949e,
+                    fields: [
+                        { name: 'Sędzia:', value: sedzia, inline: false },
+                        { name: 'Uczestnicy', value: uczestnicy, inline: false },
+                        { name: 'Przebieg rozprawy', value: przebieg, inline: false },
+                    ],
+                    footer: { text: "Sąd Okręgowy w Olsztynie – Warmia RP" },
+                    timestamp: new Date().toISOString(),
+                };
+
+                await wyslijWebhook(webhookRaporty, embed);
+                setStatus('statusRaport', 'Raport został pomyślnie wysłany.', true);
+                e.target.reset();
+
+            } catch(err) {
+                setStatus('statusRaport', 'Błąd podczas wysyłania raportu: ' + err.message, false);
+            }
+        });
+
+        // Formularz Dowodów
+        document.getElementById('dowodyForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            setStatus('statusDowody', 'Wysyłam dowód...', null);
+
+            try {
+                const caseNumber = document.getElementById('caseNumberDowody').value.trim();
+                const zglaszajacy = document.getElementById('zglaszajacyDowody').value.trim();
+                const opis = document.getElementById('opisDowodu').value.trim();
+                const link = document.getElementById('linkDowodu').value.trim();
+                
+                const links = link.split(',').map(l => l.trim()).filter(l => l.length > 0);
+                
+                let linkField = "";
+                if (links.length > 0) {
+                    linkField = links.map((l, i) => `[Dowód ${i+1}](${l})`).join('\n');
+                } else {
+                    linkField = "Brak linków.";
+                }
+
+                const embed = {
+                    title: ":page_with_curl: ZŁOŻENIE DOWODÓW",
+                    description: `> Złożono do **Sądu Okręgowego w Olsztynie – Warmia RP**`,
+                    color: 0x059669,
+                    fields: [
+                        { name: 'Numer sprawy:', value: caseNumber, inline: false },
+                        { name: 'Zgłaszający', value: zglaszajacy, inline: false },
+                        { name: 'Opis dowodu', value: opis, inline: false },
+                        { name: 'Link(i) do dowodów', value: linkField, inline: false },
+                    ],
+                    footer: { text: "Sąd Okręgowy w Olsztynie – Warmia RP" },
+                    timestamp: new Date().toISOString(),
+                };
+
+                await wyslijWebhook(webhookDowody, embed);
+                setStatus('statusDowody', 'Dowód został pomyślnie złożony.', true);
+                e.target.reset();
+
+            } catch(err) {
+                setStatus('statusDowody', 'Błąd podczas wysyłania dowodu: ' + err.message, false);
+            }
+        });
+
+        // Formularz Kalendarza
+        document.getElementById('kalendarzForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            setStatus('statusKalendarz', 'Wysyłam rozprawę...', null);
+
+            try {
+                const caseNumber = document.getElementById('caseNumberKalendarz').value.trim();
+                const sedzia = document.getElementById('sedziaKalendarz').value.trim();
+                const termin = document.getElementById('terminRozprawy').value;
+                const uczestnicy = document.getElementById('uczestnicyKalendarz').value.trim();
+                const terminFormatted = new Date(termin).toLocaleString('pl-PL', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const embed = {
+                    title: ":calendar: PLANOWANA ROZPRAWA",
+                    description: `> Zaplanowano w **Sądzie Okręgowym w Olsztynie – Warmia RP**`,
+                    color: 0xffd700,
+                    fields: [
+                        { name: 'Numer sprawy:', value: caseNumber, inline: false },
+                        { name: 'Sędzia:', value: sedzia, inline: false },
+                        { name: 'Termin:', value: terminFormatted, inline: false },
+                        { name: 'Uczestnicy:', value: uczestnicy, inline: false },
+                    ],
+                    footer: { text: "Sąd Okręgowy w Olsztynie – Warmia RP" },
+                    timestamp: new Date().toISOString(),
+                };
+
+                await wyslijWebhook(webhookKalendarz, embed);
+                setStatus('statusKalendarz', 'Rozprawa została pomyślnie dodana do kalendarza.', true);
+                e.target.reset();
+
+            } catch(err) {
+                setStatus('statusKalendarz', 'Błąd podczas wysyłania terminu: ' + err.message, false);
+            }
+        });
+    </script>
+</body>
+</html>
